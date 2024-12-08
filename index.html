@@ -4,17 +4,265 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invitación Cena Navideña</title>
+  <style>
+    /* Estilo global */
+    body {
+      font-family: 'Georgia', serif;
+      background: radial-gradient(circle at top, #1e1e2f, #4a5471);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 110%;
+      height: 110%;
+      background-image: url('./img/christmas-1.jpg');
+      background-size: cover;
+      background-position: center;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.05s ease-out;
+      z-index: -2;
+    }
+
+    /* Figuras mágicas para efecto parallax */
+    .magicshape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: floatmagic 5s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    .magicshape-1 {
+      width: 150px;
+      height: 150px;
+      top: 20%;
+      left: 10%;
+    }
+
+    .magicshape-2 {
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 75%;
+    }
+
+    .magicshape-3 {
+      width: 120px;
+      height: 120px;
+      top: 80%;
+      left: 30%;
+    }
+
+    @keyframes floatmagic {
+      to {
+        transform: translateY(-20px) translateX(10px);
+      }
+    }
+
+    /* Tarjeta de invitación */
+    .invitation-card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      width: 350px;
+      max-width: 90%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #e63946, #f4a261);
+      padding: 20px;
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+    }
+
+    .card-body {
+      padding: 20px;
+      color: #333333;
+    }
+
+    .card-body p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      padding: 15px;
+      background: #e63946;
+    }
+
+    .card-footer button {
+      background: #f4a261;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .card-footer button:hover {
+      background: #e63946;
+      transform: scale(1.1);
+    }
+
+    /* Ventana emergente */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInParallax 0.5s ease-in-out;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      transform: translateY(-30px); /* Inicialmente desplazada */
+      animation: popupSlideIn 0.5s ease-in-out;
+    }
+
+    .popup-content h2 {
+      font-size: 1.5rem;
+      color: #e63946;
+    }
+
+    .popup-content p {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .popup-content button {
+      background-color: #f4a261;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .popup-content button:hover {
+      background-color: #e63946;
+    }
+
+    @keyframes popupSlideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Animaciones del mouse */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .snowflake, .magic-shape {
+      position: absolute;
+      top: 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.2rem;
+      animation: float 8s linear infinite;
+      pointer-events: none;
+    }
+
+    .snowflake:nth-child(odd) {
+      font-size: 1rem;
+      animation: float2 10s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      50% {
+        transform: translateX(30px) translateY(200px) rotate(45deg);
+      }
+      100% {
+        transform: translateX(-50px) translateY(400px) rotate(90deg);
+      }
+    }
+
+    @keyframes float2 {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      50% {
+        transform: translateX(-40px) translateY(150px) rotate(-45deg);
+      }
+      100% {
+        transform: translateX(50px) translateY(300px) rotate(180deg);
+      }
+    }
+  </style>
 </head>
 <body>
+
+    <!--Background-->
+  <div class="background"></div>
+  <!-- Figuras mágicas -->
+  <div class="magicshape magicshape-1"></div>
+  <div class="magicshape magicshape-2"></div>
+  <div class="magicshape magicshape-3"></div>
+  <div class="snowflake" style="left: 10%;">❄</div>
+  <div class="snowflake" style="left: 30%;">❄</div>
+  <div class="snowflake" style="left: 40%; top:30%">❄</div>
+  <div class="snowflake" style="left: 50%;">❄</div>
+  <div class="snowflake" style="left: 70%;">❄</div>
+  <div class="snowflake" style="left: 80%; top:30%">❄</div>
+  <div class="snowflake" style="left: 90%;">❄</div>
+  <div class="magic-shape" style="left: 20%;">✦</div>
+  <div class="magic-shape" style="left: 40%;">★</div>
+  <div class="magic-shape" style="left: 60%;">✧</div>
+  <div class="magic-shape" style="left: 80%;">✷</div>
+
+  <!-- Tarjeta de invitación -->
   <div class="invitation-card">
     <div class="card-header">
-      <h1>Cena Navideña</h1>
+      <h1>Posada Navideña</h1>
     </div>
     <div class="card-body">
-      <p>Te invitamos a compartir una noche mágica llena de alegría y tradición.</p>
-      <p><strong>Fecha:</strong> 24 de diciembre de 2024</p>
-      <p><strong>Hora:</strong> 8:00 PM</p>
-      <p><strong>Ubicación:</strong> Restaurante “El Rincón de Navidad”</p>
+      <p>Te Invito a compartir una noche mágica llena de alegría y mucha magia.</p>
+      <p><strong>Fecha:</strong> 16 de diciembre de 2024</p>
+      <p><strong>Hora:</strong> 6:00 PM</p>
+      <p><strong>Ubicación:</strong> Cimatorio #224 Loma Hermosa</p>
       <p>¡Tu presencia hará que esta noche sea aún más especial!</p>
       <input type="text" id="guest-name" placeholder="Escribe tu nombre">
     </div>
@@ -23,18 +271,17 @@
     </div>
   </div>
 
-  <div id="guest-list-container" style="display:none;">
-    <h2>Lista de Invitados</h2>
-    <ul id="guest-list"></ul>
-  </div>
-
-  <!-- Ventana emergente elegante con efecto parallax -->
-  <div id="confirmation-popup" class="popup" style="display: none;">
+  <div id="confirmation-popup" class="popup">
     <div class="popup-content">
       <h2>¡Gracias por Confirmar tu Asistencia!</h2>
       <p>Tu nombre ha sido añadido a la lista de invitados.</p>
       <button id="close-popup">Cerrar</button>
     </div>
+  </div>
+
+  <div id="guest-list-container" style="display:none;">
+    <h2>Lista de Invitados</h2>
+    <ul id="guest-list"></ul>
   </div>
 
   <script type="module">
@@ -116,152 +363,38 @@
         fetchGuests(); // Actualiza la lista al mostrarla
       }
     });
+
+    const shapes = document.querySelectorAll(".magicshape");
+
+    document.addEventListener("mousemove", (event) => {
+      shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 10;
+        const x = (window.innerWidth - event.pageX * speed) / 100;
+        const y = (window.innerHeight - event.pageY * speed) / 100;
+        shape.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    });
+
+    // Añadimos interactividad parallax
+    document.addEventListener('mousemove', (e) => {
+      const snowflakes = document.querySelectorAll('.snowflake, .magic-shape');
+      snowflakes.forEach((flake, index) => {
+        const speed = index % 2 === 0 ? 0.05 : 0.02;
+        const x = (window.innerWidth / 2 - e.clientX) * speed;
+        const y = (window.innerHeight / 2 - e.clientY) * speed;
+        flake.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    });
+
+    // Movimiento del fondo con parallax opuesto al mouse
+    const background = document.querySelector('.background');
+
+    document.addEventListener('mousemove', (e) => {
+      const moveX = (e.clientX / window.innerWidth) * 10;
+      const moveY = (e.clientY / window.innerHeight) * 10;
+      background.style.transform = `translate3d(${-moveX}px, ${-moveY}px, 0)`;
+    });
   </script>
 
-  <style>
-    /* Estilos de la tarjeta de invitación */
-    body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, #1e1e2f, #4a5471);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .invitation-card {
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-      width: 350px;
-      text-align: center;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    .card-header {
-      background: linear-gradient(135deg, #e63946, #f4a261);
-      padding: 20px;
-      color: #ffffff;
-      font-size: 1.8rem;
-      font-weight: bold;
-      letter-spacing: 1.2px;
-    }
-
-    .card-body {
-      padding: 20px;
-      color: #333333;
-    }
-
-    .card-body p {
-      margin: 10px 0;
-      line-height: 1.6;
-    }
-
-    .card-footer {
-      padding: 15px;
-      background: #e63946;
-    }
-
-    .card-footer button {
-      background: #f4a261;
-      border: none;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: bold;
-      padding: 10px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: background 0.3s ease-in-out;
-    }
-
-    .card-footer button:hover {
-      background: #e63946;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Estilos para la ventana emergente */
-    .popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      animation: fadeInParallax 0.5s ease-in-out;
-    }
-
-    .popup-content {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-      width: 300px;
-      transform: translateY(-30px); /* Inicialmente desplazada */
-      animation: popupSlideIn 0.5s ease-in-out;
-    }
-
-    .popup-content h2 {
-      font-size: 1.5rem;
-      color: #e63946;
-    }
-
-    .popup-content p {
-      font-size: 1rem;
-      color: #333;
-    }
-
-    .popup-content button {
-      background-color: #f4a261;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .popup-content button:hover {
-      background-color: #e63946;
-    }
-
-    @keyframes popupSlideIn {
-      from {
-        transform: translateY(-50px);
-      }
-      to {
-        transform: translateY(0);
-      }
-    }
-
-    /* Efecto parallax */
-    @keyframes fadeInParallax {
-      from {
-        opacity: 0;
-        transform: translateY(-100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
 </body>
 </html>
