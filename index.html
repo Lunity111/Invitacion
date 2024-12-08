@@ -292,6 +292,17 @@
     <ul id="guest-list"></ul>
   </div>
 
+  <audio id="background-music" loop>
+    <source src="https://www.example.com/christmas-music.mp3" type="audio/mpeg">
+    Tu navegador no soporta reproducción de audio.
+  </audio>
+
+  <!-- Sonido de campana -->
+  <audio id="bell-sound">
+    <source src="https://www.example.com/bell-sound.mp3" type="audio/mpeg">
+    Tu navegador no soporta reproducción de audio.
+  </audio>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
@@ -383,6 +394,15 @@
       });
     });
 
+    // Movimiento por orientación del dispositivo
+    window.addEventListener('deviceorientation', (event) => {
+      const x = event.gamma / 2; // Inclina el dispositivo de lado
+      const y = event.beta / 2; // Inclina hacia adelante o atrás
+      shapes.forEach((flake, index) => {
+        flake.style.transform = `translate3d(${x * (index + 1)}px, ${y * (index + 1)}px, 0)`;
+      });
+    });
+
     // Añadimos interactividad parallax
     document.addEventListener('mousemove', (e) => {
       const snowflakes = document.querySelectorAll('.snowflake, .magic-shape');
@@ -403,10 +423,32 @@
       background.style.transform = `translate3d(${-moveX}px, ${-moveY}px, 0)`;
     });
 
+    // Movimiento por orientación del dispositivo
+    window.addEventListener('deviceorientation', (event) => {
+      const x = event.gamma / 2; // Inclina el dispositivo de lado
+      const y = event.beta / 2; // Inclina hacia adelante o atrás
+      background.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    });
+
     // Redirigir a Google Maps al hacer clic en la ubicación
     const locationLink = document.getElementById('location-link');
     locationLink.addEventListener('click', () => {
       window.open('https://www.google.com/maps?q=Cimatorio+224+Loma+Hermosa+León+Guanajuato+México', '_blank');
+    });
+
+     // Reproducir música de fondo al cargar la página
+     const backgroundMusic = document.getElementById('background-music');
+    window.addEventListener('load', () => {
+      backgroundMusic.play().catch(() => {
+        console.log("El usuario necesita interacción para reproducir música.");
+      });
+    });
+
+    // Sonido de campana al confirmar asistencia
+    const bellSound = document.getElementById('bell-sound');
+    rsvpButton.addEventListener('click', () => {
+      bellSound.play();
+      alert("¡Gracias por confirmar tu asistencia!");
     });
   </script>
 
