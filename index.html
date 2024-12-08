@@ -171,6 +171,14 @@
       background-color: #e63946;
     }
 
+    /* Estilo para la sección clicable */
+    .location-link {
+      color: #e63946;
+      font-weight: bold;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
     @keyframes popupSlideIn {
       from {
         transform: translateY(-50px);
@@ -262,7 +270,7 @@
       <p>Te Invito a compartir una noche mágica llena de alegría y mucha magia.</p>
       <p><strong>Fecha:</strong> 16 de diciembre de 2024</p>
       <p><strong>Hora:</strong> 6:00 PM</p>
-      <p><strong>Ubicación:</strong> Cimatorio #224 Loma Hermosa</p>
+      <p><strong>Ubicación:</strong><span span class="location-link" id="location-link">Cimatorio #224 Loma Hermosa</span></p>
       <p>¡Tu presencia hará que esta noche sea aún más especial!</p>
       <input type="text" id="guest-name" placeholder="Escribe tu nombre">
     </div>
@@ -393,6 +401,12 @@
       const moveX = (e.clientX / window.innerWidth) * 10;
       const moveY = (e.clientY / window.innerHeight) * 10;
       background.style.transform = `translate3d(${-moveX}px, ${-moveY}px, 0)`;
+    });
+
+    // Redirigir a Google Maps al hacer clic en la ubicación
+    const locationLink = document.getElementById('location-link');
+    locationLink.addEventListener('click', () => {
+      window.open('https://www.google.com/maps?q=Cimatorio+224+Loma+Hermosa+León+Guanajuato+México', '_blank');
     });
   </script>
 
