@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación Cena Navideña</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #1e1e2f, #4a5471);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .invitation-card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      width: 350px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+      position: relative;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #e63946, #f4a261);
+      padding: 20px;
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+    }
+
+    .card-body {
+      padding: 20px;
+      color: #333333;
+    }
+
+    .card-body p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      padding: 15px;
+      background: #e63946;
+    }
+
+    .card-footer button {
+      background: #f4a261;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+
+    .card-footer button:hover {
+      background: #e63946;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .confirmation-popup {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .visitor-list {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="invitation-card">
+    <div class="card-header">
+      <h1>Cena Navideña</h1>
+    </div>
+    <div class="card-body">
+      <p>Te invitamos a compartir una noche mágica llena de alegría y tradición.</p>
+      <p><strong>Fecha:</strong> 16 de diciembre de 2024</p>
+      <p><strong>Hora:</strong> 6:00 PM</p>
+      <p><strong>Ubicación:</strong> Cimatorio #224 Col. Loma Hermosa</p>
+      <p>¡Tu presencia hará que esta noche sea aún más especial!</p>
+      <input type="text" id="nameInput" placeholder="Ingresa tu nombre">
+    </div>
+    <div class="card-footer">
+      <button id="confirmBtn">Confirmar Asistencia</button>
+    </div>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="confirmation-popup">
+      <p>¡Gracias por confirmar tu asistencia!</p>
+      <button id="closePopup">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Visitor List -->
+  <div class="visitor-list" id="visitorList">
+    <h2>Lista de Invitados</h2>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById("nameInput");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const closePopup = document.getElementById("closePopup");
+    const visitorList = document.getElementById("visitorList");
+    const list = document.getElementById("list");
+
+    // Load saved names from localStorage
+    let names = JSON.parse(localStorage.getItem("names")) || [];
+    renderList();
+
+    confirmBtn.addEventListener("click", () => {
+      const name = nameInput.value.trim();
+      if (name) {
+        names.push(name);
+        localStorage.setItem("names", JSON.stringify(names));
+        renderList();
+        nameInput.value = "";
+        popupOverlay.style.display = "flex"; // Show popup
+      } else {
+        alert("Por favor, ingresa tu nombre.");
+      }
+    });
+
+    closePopup.addEventListener("click", () => {
+      popupOverlay.style.display = "none"; // Hide popup
+    });
+
+    function renderList() {
+      list.innerHTML = "";
+      names.forEach((name, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = name;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Eliminar";
+        deleteBtn.style.marginLeft = "10px";
+        deleteBtn.addEventListener("click", () => {
+          names.splice(index, 1);
+          localStorage.setItem("names", JSON.stringify(names));
+          renderList();
+        });
+
+        listItem.appendChild(deleteBtn);
+        list.appendChild(listItem);
+      });
+    }
+
+    // Toggle visitor list visibility
+    document.addEventListener("keypress", (e) => {
+      if (e.key === "v") {
+        visitorList.style.display =
+          visitorList.style.display === "block" ? "none" : "block";
+      }
+    });
+  </script>
+</body>
+</html>
